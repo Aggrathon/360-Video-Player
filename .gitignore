@@ -10,5 +10,5 @@ build/
 bin/
 gen/
 Thumbs.db
-.idea
+.idea/
 

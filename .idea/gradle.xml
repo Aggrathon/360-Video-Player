@@ -10,6 +10,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/gvr" />
+            <option value="$PROJECT_DIR$/gvr/audio" />
+            <option value="$PROJECT_DIR$/gvr/base" />
+            <option value="$PROJECT_DIR$/gvr/common" />
+            <option value="$PROJECT_DIR$/gvr/commonwidget" />
+            <option value="$PROJECT_DIR$/gvr/videowidget" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
