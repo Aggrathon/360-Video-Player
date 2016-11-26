@@ -9,16 +9,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="122.46445mm"
-   height="125.46046mm"
-   viewBox="0 0 122.46444 125.46047"
+   width="122.46045mm"
+   height="122.46046mm"
+   viewBox="0 0 122.46045 122.46049"
    version="1.1"
    id="svg8"
    inkscape:version="0.92pre2 15127"
    sodipodi:docname="icon.svg"
-   inkscape:export-filename="C:\Users\anton\Dokument\Skola\Datavetenskap\2016-2017\PsykologiVR\360-Video-Player\app\src\main\res\mipmap-hdpi\icon.png"
-   inkscape:export-xdpi="16.04711"
-   inkscape:export-ydpi="16.04711">
+   inkscape:export-filename="C:\Users\anton\Dokument\Skola\Datavetenskap\2016-2017\PsykologiVR\360-Video-Player\app\src\main\res\mipmap-xxxhdpi\icon.png"
+   inkscape:export-xdpi="39.823463"
+   inkscape:export-ydpi="39.823463">
   <title
      id="title7078">360 Video Player Icon</title>
   <defs
@@ -657,9 +657,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="247.51642"
-     inkscape:cy="231.13863"
+     inkscape:zoom="1.4"
+     inkscape:cx="224.99788"
+     inkscape:cy="241.17824"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -668,10 +668,10 @@
      inkscape:window-x="1734"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     fit-margin-top="15"
+     fit-margin-top="12"
      fit-margin-bottom="9"
-     fit-margin-right="7.25"
-     fit-margin-left="7.25"
+     fit-margin-right="7.248"
+     fit-margin-left="7.248"
      inkscape:pagecheckerboard="true" />
   <metadata
      id="metadata5">
@@ -689,7 +689,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-38.767776,-136.93954)">
+     transform="translate(-38.769776,-139.93954)">
     <path
        style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:11.82948685;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:30.23622131;stroke-opacity:1"
        id="path7080"
