@@ -3,5 +3,6 @@
     <string name="Select_Video">Select Video</string>
     <string name="Delay_Video">Delay Video Playback</string>
     <string name="title_activity_video">Video</string>
-    <string name="Cardboard_Button">Carboard</string>
+    <string name="Cardboard_Button">Play in Cardboard</string>
+    <string name="Loop_Video">Loop Video</string>
 </resources>
