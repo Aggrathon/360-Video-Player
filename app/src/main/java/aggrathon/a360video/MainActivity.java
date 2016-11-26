@@ -2,7 +2,6 @@ package aggrathon.a360video;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +18,7 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
     static final int VIDEO_SELECTED = 1;
-	static final String VIDEO_URI = "video_uri";
+	public static final String VIDEO_URI = "video_uri";
 	static final String VIDEO_DELAY = "video_delay";
 	static final String VIDEO_LOOP = "video_loop";
 

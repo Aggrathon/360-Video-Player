@@ -20,18 +20,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/buttonSelectVideo"
-            android:elevation="0dp"
             android:visibility="visible"
             style="@style/Widget.AppCompat.Button.Colored"
             android:onClick="onSelectVideo"
-            android:text="@string/Select_Video" />
+            android:text="@string/Select_Video"
+            android:elevation="0dp"/>
 
         <com.google.vr.sdk.widgets.video.VrVideoView
             android:id="@+id/vrVideo"
             android:layout_width="match_parent"
             android:scrollbars="none"
             android:layout_margin="5dip"
-            android:elevation="1dp"
             android:layout_height="220dip"/>
 
         <Switch

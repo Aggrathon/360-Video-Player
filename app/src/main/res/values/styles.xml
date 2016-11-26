@@ -19,11 +19,5 @@
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
     </style>
-	
-	<style name="ContentText">
-	<item name="android:layout_width">wrap_content</item>
-	<item name="android:layout_height">wrap_content</item>
-	<item name="android:layout_margin">5dip</item>
-	</style>
 
 </resources>
