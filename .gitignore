@@ -1,14 +1,23 @@
+# Android Studio configuration.
 *.iml
-.gradle
-/local.properties
-.DS_Store
+.idea/
+
+# Gradle configuration.
+.gradle/
 build/
+
+# User configuration.
+local.properties
+
+# OS configurations.
+.DS_Store
+Thumbs.db
+
+#Other
 /captures
 .externalNativeBuild
 *.dex
 *.class
 bin/
 gen/
-Thumbs.db
-.idea/
 
