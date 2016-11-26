@@ -1,1 +1,1 @@
-include ':app', ':gvr:base', ':gvr:audio', ':gvr:common', ':gvr:commonwidget', ':gvr:videowidget'
+include ':app', ':gvr:common', ':gvr:commonwidget', ':gvr:videowidget'
