@@ -2,6 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
+        config {
+            keyAlias '360-Video-Player'
+            keyPassword '360-Video-Player'
+            storeFile file('C:/Users/anton/.AndroidStudio2.2/keystore.jks')
+            storePassword 'kistårlösen0rD'
+        }
     }
     compileSdkVersion 24
     buildToolsVersion "25.0.1"

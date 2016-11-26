@@ -13,6 +13,10 @@ local.properties
 .DS_Store
 Thumbs.db
 
+#APKs
+*.apk
+!apk/*.apk
+
 #Other
 /captures
 .externalNativeBuild
@@ -20,4 +24,5 @@ Thumbs.db
 *.class
 bin/
 gen/
+
 
