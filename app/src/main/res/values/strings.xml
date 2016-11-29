@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">360 Video Player</string>
     <string name="Select_Video">Select Video</string>
-    <string name="Delay_Video">Delay Video Playback</string>
-    <string name="Cardboard_Button">Play in Cardboard</string>
+    <string name="Delay_Video">Delay Playback</string>
+    <string name="Play_Button">Play in VR</string>
     <string name="Loop_Video">Loop Video</string>
+    <string name="Log_Movement">Log Head Movement</string>
 </resources>

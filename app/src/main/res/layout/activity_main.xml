@@ -50,8 +50,16 @@
                 android:text="@string/Delay_Video"
                 android:layout_margin="5dip" />
 
+        <Switch
+            android:text="@string/Log_Movement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/switchLog"
+            android:checked="true"
+            android:layout_margin="5dip" />
+
         <Button
-            android:text="@string/Cardboard_Button"
+            android:text="@string/Play_Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/buttonCardboard"
