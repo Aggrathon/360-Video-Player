@@ -13,7 +13,6 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.google.vr.sdk.widgets.common.VrWidgetView;
-import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 
 import java.io.IOException;
@@ -44,25 +43,7 @@ public class MainActivity extends AppCompatActivity {
 		loopSwitch = (Switch) findViewById(R.id.switchLoop);
 		scrollView = (ScrollView)findViewById(R.id.activity_main);
         vrVideo = (VrVideoView) findViewById(R.id.vrVideo);
-		vrVideo.setEventListener(new VrVideoEventListener() {
-			@Override
-			public void onClick() {
-				vrVideo.seekTo(0);
-				vrVideo.playVideo();
-			}
-
-			@Override
-			public void onCompletion() {
-				if(loopSwitch.isChecked())
-					onClick();
-			}
-
-			@Override
-			public void onLoadSuccess() {
-				if(vrVideo.getDisplayMode() == VrWidgetView.DisplayMode.EMBEDDED)
-					vrVideo.pauseVideo();
-			}
-		});
+		vrVideo.setEventListener(new VrVideoEventListener(this));
 		playVideo(getIntent());
     }
 
@@ -75,20 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onCardboard(View view) {
         vrVideo.setDisplayMode(VrWidgetView.DisplayMode.FULLSCREEN_STEREO);
-        if(delaySwitch.isChecked()) {
-			vrVideo.seekTo(0);
-			vrVideo.pauseVideo();
-			vrVideo.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    vrVideo.playVideo();
-                }
-            },5000);
-        }
-        else {
-            vrVideo.seekTo(0);
-            vrVideo.playVideo();
-        }
     }
 
 	void playVideo(Intent intent) {
