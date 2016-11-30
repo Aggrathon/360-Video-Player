@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
 					}
 					File file = new File(Environment.getExternalStoragePublicDirectory(
 							Environment.DIRECTORY_DOCUMENTS), DIRECTORY_NAME);
-					if (!file.mkdirs()) {
-						Toast.makeText(act, "Cannot write logs", Toast.LENGTH_SHORT).show();
+					if (!file.exists() && !file.mkdirs()) {
+						Toast.makeText(act, "Cannot create folder", Toast.LENGTH_SHORT).show();
 						logSwitch.setChecked(false);
 						return;
 					}
