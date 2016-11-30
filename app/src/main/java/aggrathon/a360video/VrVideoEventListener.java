@@ -23,6 +23,7 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 	BufferedWriter fileWriter;
 	HeadTransform head;
 	long startTime;
+	long prevTime;
 	float[] rotations;
 
 	public  VrVideoEventListener(MainActivity activity) {
@@ -76,6 +77,7 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 						fileWriter.write("Time, Video Time, Yaw, Pitch, Roll");
 						fileWriter.newLine();
 						startTime = System.currentTimeMillis();
+						prevTime = 0;
 					}
 					else {
 						fileWriter = null;
@@ -103,16 +105,20 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 	@Override
 	public void onNewFrame() {
 		if(fileWriter != null) {
-			try {
-				head.getEulerAngles(rotations,0);
-				fileWriter.write(((float)(System.currentTimeMillis()-startTime)/1000)+", ");
-				fileWriter.write(((float)activity.vrVideo.getCurrentPosition()/1000)+", ");
-				fileWriter.write(rotations[0]*RAD2DEG+", "+rotations[1]*RAD2DEG+", "+rotations[2]*RAD2DEG);
-				fileWriter.newLine();
-			}
-			catch (IOException ioe) {
-				fileWriter = null;
-				Toast.makeText(activity, "Cannot write logs", Toast.LENGTH_SHORT).show();
+			long currTime = System.currentTimeMillis();
+			if(prevTime-currTime>200) {
+				prevTime = currTime;
+				try {
+					head.getEulerAngles(rotations,0);
+					fileWriter.write(((float)(currTime-startTime)/1000)+", ");
+					fileWriter.write(((float)activity.vrVideo.getCurrentPosition()/1000)+", ");
+					fileWriter.write(rotations[0]*RAD2DEG+", "+rotations[1]*RAD2DEG+", "+rotations[2]*RAD2DEG);
+					fileWriter.newLine();
+				}
+				catch (IOException ioe) {
+					fileWriter = null;
+					Toast.makeText(activity, "Cannot write logs", Toast.LENGTH_SHORT).show();
+				}
 			}
 		}
 	}
