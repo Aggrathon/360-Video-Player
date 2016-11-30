@@ -1,11 +1,24 @@
 package aggrathon.a360video;
 
 
+import android.net.Uri;
+import android.os.Environment;
+import android.text.format.DateFormat;
+import android.widget.Toast;
+
 import com.google.vr.sdk.widgets.common.VrWidgetView;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.GregorianCalendar;
 
 class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventListener {
 
 	MainActivity activity;
+	String fileName;
+	BufferedWriter fileWriter;
 
 	public  VrVideoEventListener(MainActivity activity) {
 		this.activity = activity;
@@ -43,6 +56,37 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 				}, 5000);
 			} else {
 				activity.vrVideo.playVideo();
+			}
+			if(activity.logSwitch.isChecked()) {
+				Uri uri = Uri.parse(activity.getIntent().getStringExtra(MainActivity.VIDEO_URI));
+				fileName = uri.getLastPathSegment()+"_"+DateFormat.format("yyyyMMddHHmmss",GregorianCalendar.getInstance())+".csv";
+				File logFile;
+				logFile = new File(Environment.getExternalStoragePublicDirectory(
+						Environment.DIRECTORY_DOCUMENTS), MainActivity.DIRECTORY_NAME+File.pathSeparator+fileName);
+				try {
+					if(logFile.createNewFile() && logFile.canWrite()) {
+						fileWriter = new BufferedWriter(new FileWriter(logFile));
+						fileWriter.write("Time, Video Time, Yaw, Pitch, Roll");
+						fileWriter.newLine();
+					}
+					else {
+						fileWriter = null;
+					}
+				}
+				catch (IOException ioe) {
+					fileWriter = null;
+				}
+			}
+		}
+		else {
+			if(fileWriter != null) {
+				try {
+					fileWriter.close();
+				} catch (IOException ioe) {
+
+				}
+				fileWriter = null;
+				Toast.makeText(activity, "Log saved to "+fileName, Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
