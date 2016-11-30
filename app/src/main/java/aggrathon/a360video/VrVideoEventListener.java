@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.text.format.DateFormat;
 import android.widget.Toast;
 
+import com.google.vr.sdk.base.HeadTransform;
 import com.google.vr.sdk.widgets.common.VrWidgetView;
 
 import java.io.BufferedWriter;
@@ -15,13 +16,19 @@ import java.io.IOException;
 import java.util.GregorianCalendar;
 
 class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventListener {
+	final float RAD2DEG = 180/(float)Math.PI;
 
 	MainActivity activity;
 	String fileName;
 	BufferedWriter fileWriter;
+	HeadTransform head;
+	long startTime;
+	float[] rotations;
 
 	public  VrVideoEventListener(MainActivity activity) {
 		this.activity = activity;
+		rotations = new float[3];
+		head = new HeadTransform();
 	}
 
 	@Override
@@ -68,13 +75,16 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 						fileWriter = new BufferedWriter(new FileWriter(logFile));
 						fileWriter.write("Time, Video Time, Yaw, Pitch, Roll");
 						fileWriter.newLine();
+						startTime = System.currentTimeMillis();
 					}
 					else {
 						fileWriter = null;
+						Toast.makeText(activity, "Cannot write logs", Toast.LENGTH_SHORT).show();
 					}
 				}
 				catch (IOException ioe) {
 					fileWriter = null;
+					Toast.makeText(activity, "Cannot write logs", Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
@@ -83,7 +93,6 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 				try {
 					fileWriter.close();
 				} catch (IOException ioe) {
-
 				}
 				fileWriter = null;
 				Toast.makeText(activity, "Log saved to "+fileName, Toast.LENGTH_SHORT).show();
@@ -93,6 +102,18 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 
 	@Override
 	public void onNewFrame() {
-
+		if(fileWriter != null) {
+			try {
+				head.getEulerAngles(rotations,0);
+				fileWriter.write(((float)(System.currentTimeMillis()-startTime)/1000)+", ");
+				fileWriter.write(((float)activity.vrVideo.getCurrentPosition()/1000)+", ");
+				fileWriter.write(rotations[0]*RAD2DEG+", "+rotations[1]*RAD2DEG+", "+rotations[2]*RAD2DEG);
+				fileWriter.newLine();
+			}
+			catch (IOException ioe) {
+				fileWriter = null;
+				Toast.makeText(activity, "Cannot write logs", Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 }
