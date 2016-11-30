@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
 	public static final String VIDEO_URI = "video_uri";
 	static final String VIDEO_DELAY = "video_delay";
 	static final String VIDEO_LOOP = "video_loop";
+	static final String VIDEO_LOG = "video_log";
 	public static final String DIRECTORY_NAME = "360VideoPlayer";
+	final int PERMISSION_WRITE = 1;
 
     VrVideoView vrVideo;
 	Switch delaySwitch;
@@ -45,13 +48,16 @@ public class MainActivity extends AppCompatActivity {
 		delaySwitch = (Switch) findViewById(R.id.switchDelay);
 		loopSwitch = (Switch) findViewById(R.id.switchLoop);
 		logSwitch = (Switch) findViewById(R.id.switchLog);
+		logSwitch.setChecked((ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED));
 		final Activity act = this;
 		logSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if(isChecked) {
 					if (ActivityCompat.checkSelfPermission(act, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-						ActivityCompat.requestPermissions(act, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET},1);
+						ActivityCompat.requestPermissions(act, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET},PERMISSION_WRITE);
+						logSwitch.setChecked(false);
+						return;
 					}
 					if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
 						Toast.makeText(act, "Cannot write logs", Toast.LENGTH_SHORT).show();
@@ -104,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
 				intent.putExtra(VIDEO_URI, videoUri.toString());
 				setIntent(intent);
 			}
-			else
+			else {
 				vrVideo.loadVideoFromAsset("black.mp4", new VrVideoView.Options());
+			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -145,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
 			outState.putString(VIDEO_URI,videoUri.toString());
 		outState.putBoolean(VIDEO_DELAY, delaySwitch.isChecked());
 		outState.putBoolean(VIDEO_LOOP, loopSwitch.isChecked());
+		outState.putBoolean(VIDEO_LOG, logSwitch.isChecked());
 	}
 
 	@Override
@@ -154,6 +162,14 @@ public class MainActivity extends AppCompatActivity {
 			videoUri = Uri.parse(uri);
 		delaySwitch.setChecked(savedInstanceState.getBoolean(VIDEO_DELAY, true));
 		loopSwitch.setChecked(savedInstanceState.getBoolean(VIDEO_LOOP, true));
+		logSwitch.setChecked(savedInstanceState.getBoolean(VIDEO_LOG, true));
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		if(requestCode == PERMISSION_WRITE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+			logSwitch.setChecked(true);
+		}
 	}
 
 	@Override

@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:scrollbars="none"
             android:layout_margin="5dip"
-            android:layout_height="220dip"/>
+            android:layout_height="210dip"/>
 
         <Switch
             android:text="@string/Loop_Video"
