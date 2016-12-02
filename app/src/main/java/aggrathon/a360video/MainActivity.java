@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 		catch (IOException e) {
 			e.printStackTrace();
 			Log.e("MainActivity", "Could not open video file");
+			Toast.makeText(this, "Could not open video file", Toast.LENGTH_SHORT).show();
 			try {
 				videoUri = null;
 				vrVideo.loadVideoFromAsset("black.mp4", new VrVideoView.Options());
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
 			return;
 		}
+		Log.d("Video", videoUri == null? "black.mp4" : videoUri.toString());
 	}
 
 	@Override
@@ -136,12 +138,13 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		String uri = savedInstanceState.getString(VIDEO_URI, null);
-		if(uri != null)
-			videoUri = Uri.parse(uri);
 		delaySwitch.setChecked(savedInstanceState.getBoolean(VIDEO_DELAY, true));
 		loopSwitch.setChecked(savedInstanceState.getBoolean(VIDEO_LOOP, true));
 		logSwitch.setChecked(savedInstanceState.getBoolean(VIDEO_LOG, true));
+
+		String uri = savedInstanceState.getString(VIDEO_URI, null);
+		if(uri != null)
+			playVideo(Uri.parse(uri));
 	}
 
 	@Override

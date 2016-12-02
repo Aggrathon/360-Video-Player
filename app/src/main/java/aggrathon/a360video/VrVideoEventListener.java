@@ -1,8 +1,10 @@
 package aggrathon.a360video;
 
 
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.OpenableColumns;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
@@ -93,14 +95,7 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 			if(activity.logSwitch.isChecked()) {
 				String str = activity.getIntent().getStringExtra(MainActivity.VIDEO_URI);
 				if(str != null) {
-					Uri uri = Uri.parse(str);
-					String name = uri.getLastPathSegment();
-					int start = name.lastIndexOf("/");
-					int end = name.lastIndexOf(".");
-					if(start < 0) start = 0;
-					if(end < 0) end = name.length()-1;
-					fileName = name.substring(start,end).replaceAll("\\W+", "") + "_" + DateFormat.format("yyyyMMddHHmmss", GregorianCalendar.getInstance()) + ".csv";
-
+					fileName = getFileName(Uri.parse(str)) + "_" + DateFormat.format("yyyyMMddHHmmss", GregorianCalendar.getInstance()) + ".csv";
 					try {
 						File logFile = new File(Environment.getExternalStoragePublicDirectory(
 								Environment.DIRECTORY_DOCUMENTS), MainActivity.DIRECTORY_NAME + File.separator + fileName);
@@ -119,6 +114,7 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 					} catch (IOException ioe) {
 						fileWriter = null;
 						Toast.makeText(activity, "Failed to create and write to file", Toast.LENGTH_SHORT).show();
+						Log.e("File", "Cannot Create file "+fileName);
 						ioe.printStackTrace();
 					}
 				}
@@ -136,12 +132,34 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 				} catch (IOException ioe) {
 				}
 				fileWriter = null;
-				Toast.makeText(activity, "Log saved to "+fileName, Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity, "Log saved to \n"+fileName, Toast.LENGTH_SHORT).show();
 			}
 			if(newDisplayMode == VrWidgetView.DisplayMode.EMBEDDED) {
 				activity.vrVideo.pauseVideo();
 			}
 		}
+	}
+
+	String getFileName(Uri uri) {
+		String result = null;
+		if (uri.getScheme().equals("content")) {
+			Cursor cursor = activity.getContentResolver().query(uri, null, null, null, null);
+			try {
+				if (cursor != null && cursor.moveToFirst()) {
+					result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+				}
+			} finally {
+				cursor.close();
+			}
+		}
+		if (result == null) {
+			result = uri.getPath();
+		}
+		int start = result.lastIndexOf("/");
+		int end = result.lastIndexOf(".");
+		if(start < 0) start = 0;
+		if(end < 0) end = result.length()-1;
+		return result.substring(start,end).replaceAll("\\W+", "");
 	}
 
 }

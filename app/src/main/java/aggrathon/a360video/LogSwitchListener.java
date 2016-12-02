@@ -33,7 +33,7 @@ class LogSwitchListener implements OnCheckedChangeListener {
 			}
 			File file = new File(Environment.getExternalStoragePublicDirectory(
 					Environment.DIRECTORY_DOCUMENTS), MainActivity.DIRECTORY_NAME);
-			if (!file.exists() && !file.mkdirs()) {
+			if (!file.mkdirs() && !file.isDirectory()) {
 				Toast.makeText(activity, "Cannot create folder for logs", Toast.LENGTH_SHORT).show();
 				activity.logSwitch.setChecked(false);
 				return;
