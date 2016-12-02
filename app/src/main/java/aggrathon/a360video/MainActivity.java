@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 	static final String VIDEO_LOOP = "video_loop";
 	static final String VIDEO_LOG = "video_log";
 	public static final String DIRECTORY_NAME = "360VideoPlayer";
-	final int PERMISSION_WRITE = 1;
+	static final int PERMISSION_WRITE = 1;
 
     VrVideoView vrVideo;
 	Switch delaySwitch;
@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 	Switch logSwitch;
 	Uri videoUri;
 	ScrollView scrollView;
+
+	LogSwitchListener logSwitchListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,31 +51,8 @@ public class MainActivity extends AppCompatActivity {
 		loopSwitch = (Switch) findViewById(R.id.switchLoop);
 		logSwitch = (Switch) findViewById(R.id.switchLog);
 		logSwitch.setChecked((ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED));
-		final Activity act = this;
-		logSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if(isChecked) {
-					if (ActivityCompat.checkSelfPermission(act, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-						ActivityCompat.requestPermissions(act, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET},PERMISSION_WRITE);
-						logSwitch.setChecked(false);
-						return;
-					}
-					if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-						Toast.makeText(act, "Cannot write logs", Toast.LENGTH_SHORT).show();
-						logSwitch.setChecked(false);
-						return;
-					}
-					File file = new File(Environment.getExternalStoragePublicDirectory(
-							Environment.DIRECTORY_DOCUMENTS), DIRECTORY_NAME);
-					if (!file.exists() && !file.mkdirs()) {
-						Toast.makeText(act, "Cannot create folder", Toast.LENGTH_SHORT).show();
-						logSwitch.setChecked(false);
-						return;
-					}
-				}
-			}
-		});
+		logSwitchListener = new LogSwitchListener(this);
+		logSwitch.setOnCheckedChangeListener(logSwitchListener);
 		scrollView = (ScrollView)findViewById(R.id.activity_main);
         vrVideo = (VrVideoView) findViewById(R.id.vrVideo);
 		vrVideo.setEventListener(new VrVideoEventListener(this));
@@ -116,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 		}
 		catch (IOException e) {
 			e.printStackTrace();
-			Log.e("MainActivity", "Could not open file");
+			Log.e("MainActivity", "Could not open video file");
 			try {
 				videoUri = null;
 				vrVideo.loadVideoFromAsset("black.mp4", new VrVideoView.Options());
@@ -169,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		if(requestCode == PERMISSION_WRITE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 			logSwitch.setChecked(true);
+			logSwitchListener.onCheckedChanged(logSwitch,true);
 		}
 	}
 

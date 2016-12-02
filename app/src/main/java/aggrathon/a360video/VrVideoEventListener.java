@@ -4,6 +4,7 @@ package aggrathon.a360video;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.vr.sdk.widgets.common.VrWidgetView;
@@ -45,7 +46,7 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 					}
 					catch (IOException ioe) {
 						fileWriter = null;
-						Toast.makeText(activity, "Cannot write to log", Toast.LENGTH_SHORT).show();
+						Toast.makeText(activity, "Cannot write current status to log file", Toast.LENGTH_SHORT).show();
 						activity.vrVideo.removeCallbacks(logger);
 					}
 				}
@@ -93,11 +94,18 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 				String str = activity.getIntent().getStringExtra(MainActivity.VIDEO_URI);
 				if(str != null) {
 					Uri uri = Uri.parse(str);
-					fileName = uri.getLastPathSegment() + "_" + DateFormat.format("yyyyMMddHHmmss", GregorianCalendar.getInstance()) + ".csv";
-					File logFile;
-					logFile = new File(Environment.getExternalStoragePublicDirectory(
-							Environment.DIRECTORY_DOCUMENTS), MainActivity.DIRECTORY_NAME + File.separator + fileName);
+					String name = uri.getLastPathSegment();
+					int start = name.lastIndexOf("/");
+					int end = name.lastIndexOf(".");
+					if(start < 0) start = 0;
+					if(end < 0) end = name.length()-1;
+					fileName = name.substring(start,end).replaceAll("\\W+", "") + "_" + DateFormat.format("yyyyMMddHHmmss", GregorianCalendar.getInstance()) + ".csv";
+
 					try {
+						File logFile = new File(Environment.getExternalStoragePublicDirectory(
+								Environment.DIRECTORY_DOCUMENTS), MainActivity.DIRECTORY_NAME + File.separator + fileName);
+						File dirFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), MainActivity.DIRECTORY_NAME);
+						dirFile.mkdirs();
 						if (logFile.createNewFile() && logFile.canWrite()) {
 							fileWriter = new BufferedWriter(new FileWriter(logFile));
 							fileWriter.write("Time, Video Time, Yaw, Pitch");
@@ -106,11 +114,12 @@ class VrVideoEventListener extends com.google.vr.sdk.widgets.video.VrVideoEventL
 							activity.vrVideo.post(logger);
 						} else {
 							fileWriter = null;
-							Toast.makeText(activity, "Cannot create log", Toast.LENGTH_SHORT).show();
+							Toast.makeText(activity, "Cannot create log file", Toast.LENGTH_SHORT).show();
 						}
 					} catch (IOException ioe) {
 						fileWriter = null;
-						Toast.makeText(activity, "Cannot write log", Toast.LENGTH_SHORT).show();
+						Toast.makeText(activity, "Failed to create and write to file", Toast.LENGTH_SHORT).show();
+						ioe.printStackTrace();
 					}
 				}
 				else {
