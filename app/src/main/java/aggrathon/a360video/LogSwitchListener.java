@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.io.File;
@@ -39,5 +40,10 @@ class LogSwitchListener implements OnCheckedChangeListener {
 				return;
 			}
 		}
+	}
+
+	public void SetChecked(Switch logSwitch, boolean isChecked) {
+		logSwitch.setChecked(isChecked);
+		onCheckedChanged(logSwitch,isChecked);
 	}
 }

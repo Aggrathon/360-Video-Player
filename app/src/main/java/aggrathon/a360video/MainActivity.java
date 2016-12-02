@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
 		delaySwitch = (Switch) findViewById(R.id.switchDelay);
 		loopSwitch = (Switch) findViewById(R.id.switchLoop);
 		logSwitch = (Switch) findViewById(R.id.switchLog);
-		logSwitch.setChecked((ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED));
 		logSwitchListener = new LogSwitchListener(this);
+		logSwitchListener.SetChecked(logSwitch,	(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED));
 		logSwitch.setOnCheckedChangeListener(logSwitchListener);
 		scrollView = (ScrollView)findViewById(R.id.activity_main);
         vrVideo = (VrVideoView) findViewById(R.id.vrVideo);
@@ -150,8 +150,7 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		if(requestCode == PERMISSION_WRITE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-			logSwitch.setChecked(true);
-			logSwitchListener.onCheckedChanged(logSwitch,true);
+			logSwitchListener.SetChecked(logSwitch,true);
 		}
 	}
 
