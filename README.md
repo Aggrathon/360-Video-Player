@@ -4,3 +4,4 @@ A simple 360 video player for Google Cardboard
  - Non-carboard previewing
  - Video looping
  - Additional delay to put on the headset
+ - Logging of look direction
